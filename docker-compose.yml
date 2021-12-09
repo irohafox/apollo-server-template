@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/web/Dockerfile
-    command: /bin/ash -c 'yarn start'
+    command: /bin/ash -c 'yarn dev'
     tty: true
     stdin_open: true
     ports:
