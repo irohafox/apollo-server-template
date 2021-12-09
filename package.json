@@ -1,13 +1,16 @@
 {
   "name": "apollo-server-template",
   "version": "1.0.0",
-  "main": "server.ts",
+  "main": "dist/server.js",
   "repository": "https://github.com/irohafox/apollo-server-template.git",
   "author": "irohafox",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "nodemon --config ./nodemon.json"
+    "dev": "nodemon --config ./nodemon.json",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "apollo-server": "^3.5.0",
