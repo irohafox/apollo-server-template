@@ -1,33 +1,17 @@
-import { ApolloServer, gql } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import express from 'express'
 import http from 'http'
+import schema from './schema'
 
 require('dotenv').config()
-
-const typeDefs = gql`
-  type Query {
-    me: User
-  }
-
-  type User {
-    username: String!
-  }
-`
-
-const resolvers = {
-  Query: {
-    me: () => ({ username: 'irohafox' })
-  }
-}
 
 async function listen() {
   const app = express()
   const httpServer = http.createServer(app)
 
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   })
 
