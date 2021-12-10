@@ -8,6 +8,16 @@ require('dotenv').config()
 
 async function listen() {
   const app = express()
+
+  // NOTE: graphqlとは切り離して各サービスのエンドポイントを定義する(auth/callなど)
+  // app.get('/auth', (_, res) => {
+  //   res.send('auth')
+  // })
+
+  // app.get('/call', (_, res) => {
+  //   res.send('call')
+  // })
+
   const httpServer = http.createServer(app)
 
   const server = new ApolloServer({
