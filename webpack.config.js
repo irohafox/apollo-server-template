@@ -31,7 +31,7 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: 'src/typedefs', to: 'typedefs' }]
+      patterns: [{ from: 'src/graphql/typedefs', to: 'typedefs' }]
     })
   ]
 }
