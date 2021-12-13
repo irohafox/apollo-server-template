@@ -40,7 +40,8 @@ async function main() {
   try {
     await listen()
     console.log(
-      `Server is ready at http://localhost:${process.env.HTTP_SERVER_PORT}/graphql`
+      `Server is ready at http://localhost:${process.env.HTTP_SERVER_PORT}/\n`,
+      'GraphQL: /graphql'
     )
   } catch (err) {
     console.error('Error starting the node server', err)
