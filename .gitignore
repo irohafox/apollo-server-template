@@ -31,3 +31,4 @@ node_modules/
 .netlify
 
 .env
+/docker/db/data
