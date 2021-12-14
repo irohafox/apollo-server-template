@@ -10,7 +10,9 @@
     "dev": "nodemon --config ./nodemon.json",
     "build": "webpack",
     "start": "node dist/index.js",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "db:reset": "yarn prisma migrate reset && yarn prisma migrate dev --name init",
+    "db:seed": "yarn ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^3.6.0",
