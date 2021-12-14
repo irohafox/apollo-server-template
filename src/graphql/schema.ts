@@ -13,7 +13,7 @@ const typeDefs = gqlFiles.map((file) => {
 // TODO: resolversの分割
 const resolvers = {
   Query: {
-    me: () => ({ username: 'irohafox' })
+    me: () => ({ name: 'irohafox' })
   }
 }
 
