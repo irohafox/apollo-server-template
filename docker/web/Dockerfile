@@ -1,7 +1,7 @@
-FROM node:16.13.1-alpine
+FROM node:16.13.1
 
-RUN apk update && \
-  apk add mysql-client openssl
+RUN apt-get update -qq && \
+  apt-get install -y default-mysql-client
 
 RUN mkdir /apollo-server-template
 WORKDIR /apollo-server-template
