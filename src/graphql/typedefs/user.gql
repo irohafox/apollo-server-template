@@ -1,3 +1,7 @@
 type User {
-  name: String?
+  name: String
+}
+
+input UserInput {
+  name: String
 }
