@@ -1,4 +1,4 @@
 type Query {
   user(id: Int!): User
-  users: [User]
+  users: [User!]
 }
