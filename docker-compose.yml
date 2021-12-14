@@ -13,7 +13,7 @@ services:
       MYSQL_PASSWORD: password
     ports:
       - "3307:3306"
-  web:
+  web: &web_base
     build:
       context: .
       dockerfile: ./docker/web/Dockerfile
@@ -26,3 +26,8 @@ services:
       - 4000:4000
     volumes:
       - .:/apollo-server-template
+  prismastudio:
+    <<: *web_base
+    command: /bin/bash -c 'yarn prisma studio'
+    ports:
+      - 5555:5555
