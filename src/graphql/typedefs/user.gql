@@ -3,6 +3,10 @@ type User {
   name: String
 }
 
-input UserInput {
+input UserCreateInput {
   name: String
+}
+
+type Mutation {
+  createUser(input: UserCreateInput!): User
 }

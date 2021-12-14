@@ -12,6 +12,14 @@ const userResolver = {
     users: () => {
       return prisma.user.findMany()
     }
+  },
+  mutations: {
+    createUser: async (_: any, { input }: any) => {
+      const user = await prisma.user.create({
+        data: input
+      })
+      return user
+    }
   }
 }
 
