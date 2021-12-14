@@ -8,8 +8,10 @@ datasource db {
 }
 
 model User {
-  id   Int     @id @default(autoincrement()) @db.UnsignedInt
-  name String?
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }
