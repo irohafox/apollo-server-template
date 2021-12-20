@@ -7,7 +7,7 @@ type User {
 input UserCreateInput {
   name: String!
   email: String!
-  encryptedPassword: String!
+  password: String!
 }
 
 type Mutation {
