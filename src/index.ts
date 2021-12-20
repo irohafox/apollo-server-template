@@ -35,7 +35,8 @@ async function main() {
   try {
     await listen()
     console.log(
-      `Server is ready at http://localhost:${process.env.HTTP_SERVER_PORT}/\n`,
+      `Server is ready at http://localhost:${process.env.HTTP_SERVER_PORT}\n`,
+      'Authentication: /auth\n',
       'GraphQL: /graphql'
     )
   } catch (err) {
