@@ -10,6 +10,7 @@ require('dotenv').config()
 async function listen() {
   const app = express()
 
+  app.use(express.json())
   app.use('/auth', authRouter)
 
   const httpServer = http.createServer(app)
