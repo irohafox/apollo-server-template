@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import express from 'express'
 import http from 'http'
+import authRouter from '@src/auth'
 import schema from '@src/graphql/schema'
 
 require('dotenv').config()
@@ -9,14 +10,7 @@ require('dotenv').config()
 async function listen() {
   const app = express()
 
-  // NOTE: graphqlとは切り離して各サービスのエンドポイントを定義する(auth/callなど)
-  // app.get('/auth', (_, res) => {
-  //   res.send('auth')
-  // })
-
-  // app.get('/call', (_, res) => {
-  //   res.send('call')
-  // })
+  app.use('/auth', authRouter)
 
   const httpServer = http.createServer(app)
 
