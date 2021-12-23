@@ -1,23 +1,32 @@
-import express from 'express'
+import { Request, Response, Router } from 'express'
 import { body, validationResult } from 'express-validator'
 import * as auth from '@src/middleware/auth'
 import { prisma } from '@src/middleware/db'
 
-const router = express.Router()
+const router = Router()
 
-router.get('/sign_in', (_, res) => {
-  res.send('sign_in')
-})
+router.post(
+  '/sign_in',
+  body('email').isEmail(),
+  body('password').not().isEmpty(),
+  async (req: Request, res: Response) => {
+    const [valid, errors] = validateRequest(req)
+    if (!valid) {
+      return res.status(400).json({ errors })
+    }
+    res.send('sign_in')
+  }
+)
 
 router.post(
   '/sign_up',
   body('email').isEmail(),
   body('password').not().isEmpty(),
   body('name').not().isEmpty(),
-  async (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
+  async (req: Request, res: Response) => {
+    const [valid, errors] = validateRequest(req)
+    if (!valid) {
+      return res.status(400).json({ errors })
     }
 
     const duplicateEmail: boolean = await prisma.user
@@ -68,5 +77,10 @@ router.post(
     res.send('success')
   }
 )
+
+function validateRequest(req: Request): [boolean, any] {
+  const errors = validationResult(req)
+  return [errors.isEmpty(), errors.array()]
+}
 
 export default router
