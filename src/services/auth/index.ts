@@ -38,7 +38,17 @@ router.post(
     if (!authorized) {
       return res.status(401).json({ errors: null })
     }
-    res.send(auth.createToken(specificUser.id, specificUser.reauthVersion))
+
+    const { accessToken, refreshToken } = auth.createToken(
+      specificUser.id,
+      specificUser.reauthVersion
+    )
+
+    res.set({
+      'Access-Token': accessToken,
+      'Refresh-Token': refreshToken
+    })
+    res.send()
   }
 )
 
