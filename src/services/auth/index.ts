@@ -91,14 +91,16 @@ router.post(
     }
 
     try {
-      await prisma.user.create({
-        data: permitAttributes(req.body)
+      const user = await prisma.user.create({
+        data: permitAttributes(req.body),
+        select: {
+          id: true
+        }
       })
+      return res.status(200).json(user)
     } catch (_) {
       return res.status(422).json({ errors: null })
     }
-
-    res.send('success')
   }
 )
 
