@@ -14,7 +14,30 @@ router.post(
     if (!valid) {
       return res.status(400).json({ errors })
     }
-    res.send('sign_in')
+
+    const specificUser = await prisma.user.findUnique({
+      where: {
+        email: req.body.email
+      },
+      select: {
+        encryptedPassword: true
+      }
+    })
+
+    if (!specificUser) {
+      return res.status(401).json({ errors: null })
+    }
+
+    const authorized = await auth.comparePassword(
+      req.body.password,
+      specificUser.encryptedPassword
+    )
+
+    if (!authorized) {
+      return res.status(401).json({ errors: null })
+    }
+
+    res.send('success')
   }
 )
 
@@ -74,6 +97,7 @@ router.post(
     } catch (_) {
       return res.status(422).json({ errors: null })
     }
+
     res.send('success')
   }
 )
