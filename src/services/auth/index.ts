@@ -3,6 +3,8 @@ import { body, validationResult } from 'express-validator'
 import * as auth from '@src/middleware/auth'
 import { prisma } from '@src/middleware/db'
 
+import jwtConfig from '@src/config/jwt'
+
 const router = Router()
 
 router.post(
@@ -38,7 +40,6 @@ router.post(
     if (!authorized) {
       return res.status(401).json({ errors: null })
     }
-
     res.send(auth.createToken(specificUser.id, specificUser.reauthVersion))
   }
 )
