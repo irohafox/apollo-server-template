@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export function generateEncryptedPassword(
   plainPassword: string
@@ -12,4 +13,18 @@ export function comparePassword(
   encryptedPassword: string
 ): Promise<boolean> {
   return bcrypt.compare(plainPassword, encryptedPassword)
+}
+
+// TODO: jwt congfig
+export function createToken(userId: number): {
+  accessToken: string
+  refreshToken: string
+} {
+  return {
+    accessToken: jwt.sign({ id: userId }, 'test_secret', {
+      algorithm: 'HS256',
+      expiresIn: '30m'
+    }),
+    refreshToken: 'test'
+  }
 }

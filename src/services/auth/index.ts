@@ -20,6 +20,7 @@ router.post(
         email: req.body.email
       },
       select: {
+        id: true,
         encryptedPassword: true
       }
     })
@@ -37,7 +38,7 @@ router.post(
       return res.status(401).json({ errors: null })
     }
 
-    res.send('success')
+    res.send(auth.createToken(specificUser.id))
   }
 )
 
