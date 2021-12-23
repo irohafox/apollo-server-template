@@ -1,6 +1,6 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
-import bcrypt from 'bcrypt'
+import * as auth from '@src/middleware/auth'
 import { prisma } from '@src/middleware/db'
 
 const router = express.Router()
@@ -42,7 +42,7 @@ router.post(
       })
     }
 
-    req.body.encryptedPassword = await generateEncryptedPassword(
+    req.body.encryptedPassword = await auth.generateEncryptedPassword(
       req.body.password
     )
 
@@ -68,18 +68,5 @@ router.post(
     res.send('success')
   }
 )
-
-// bcrypt
-const generateEncryptedPassword = async (plainPassword: string) => {
-  const saltRounds = 10
-  return await bcrypt.hash(plainPassword, saltRounds)
-}
-
-const comparePassword = async (
-  plainPassword: string,
-  encryptedPassword: string
-) => {
-  return await bcrypt.compare(plainPassword, encryptedPassword)
-}
 
 export default router
