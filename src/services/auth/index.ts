@@ -25,15 +25,18 @@ router.post(
       return res.status(400).json({ errors: errors.array() })
     }
 
-    const invalid = await prisma.user.findUnique({
-      where: {
-        email: req.body.email
-      },
-      select: {
-        id: true
-      }
-    })
-    if (invalid) {
+    const duplicateEmail: boolean = await prisma.user
+      .findUnique({
+        where: {
+          email: req.body.email
+        },
+        select: {
+          id: true
+        }
+      })
+      .then(Boolean)
+
+    if (duplicateEmail) {
       return res.status(422).json({
         errors: [
           {
@@ -47,11 +50,22 @@ router.post(
     req.body.encryptedPassword = await generateEncryptedPassword(
       req.body.password
     )
-    delete req.body.password
+
+    const permitAttributes = ({
+      email,
+      name,
+      encryptedPassword
+    }: {
+      email: string
+      name: string
+      encryptedPassword: string
+    }) => {
+      return { email, name, encryptedPassword }
+    }
 
     try {
       await prisma.user.create({
-        data: req.body
+        data: permitAttributes(req.body)
       })
     } catch (error) {
       return res.status(422).json({ errors: null })
