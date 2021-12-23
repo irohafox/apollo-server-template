@@ -21,7 +21,8 @@ router.post(
       },
       select: {
         id: true,
-        encryptedPassword: true
+        encryptedPassword: true,
+        reauthVersion: true
       }
     })
 
@@ -38,7 +39,7 @@ router.post(
       return res.status(401).json({ errors: null })
     }
 
-    res.send(auth.createToken(specificUser.id))
+    res.send(auth.createToken(specificUser.id, specificUser.reauthVersion))
   }
 )
 

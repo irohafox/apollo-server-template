@@ -16,7 +16,10 @@ export function comparePassword(
 }
 
 // TODO: jwt congfig
-export function createToken(userId: number): {
+export function createToken(
+  userId: number,
+  reauthVersion: number
+): {
   accessToken: string
   refreshToken: string
 } {
@@ -25,6 +28,9 @@ export function createToken(userId: number): {
       algorithm: 'HS256',
       expiresIn: '30m'
     }),
-    refreshToken: 'test'
+    refreshToken: jwt.sign({ id: userId, reauthVersion }, 'test_secret', {
+      algorithm: 'HS256',
+      expiresIn: '30d'
+    })
   }
 }
