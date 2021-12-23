@@ -1,10 +1,4 @@
-import { prisma } from '@src/lib/db'
-import bcrypt from 'bcrypt'
-
-const generateEncryptedPassword = async (plainPassword: string) => {
-  const saltRounds = 10
-  return await bcrypt.hash(plainPassword, saltRounds)
-}
+import { prisma } from '@src/middleware/db'
 
 const userResolver = {
   queries: {

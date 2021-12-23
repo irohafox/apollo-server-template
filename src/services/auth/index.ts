@@ -1,12 +1,7 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
 import bcrypt from 'bcrypt'
-import { prisma } from '@src/lib/db'
-
-const generateEncryptedPassword = async (plainPassword: string) => {
-  const saltRounds = 10
-  return await bcrypt.hash(plainPassword, saltRounds)
-}
+import { prisma } from '@src/middleware/db'
 
 const router = express.Router()
 
@@ -67,11 +62,24 @@ router.post(
       await prisma.user.create({
         data: permitAttributes(req.body)
       })
-    } catch (error) {
+    } catch (_) {
       return res.status(422).json({ errors: null })
     }
     res.send('success')
   }
 )
+
+// bcrypt
+const generateEncryptedPassword = async (plainPassword: string) => {
+  const saltRounds = 10
+  return await bcrypt.hash(plainPassword, saltRounds)
+}
+
+const comparePassword = async (
+  plainPassword: string,
+  encryptedPassword: string
+) => {
+  return await bcrypt.compare(plainPassword, encryptedPassword)
+}
 
 export default router
