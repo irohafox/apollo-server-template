@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import jwtConfig from '@src/config/jwt'
 
 export function generateEncryptedPassword(
   plainPassword: string
@@ -15,7 +16,6 @@ export function comparePassword(
   return bcrypt.compare(plainPassword, encryptedPassword)
 }
 
-// TODO: jwt congfig
 export function createToken(
   userId: number,
   reauthVersion: number
@@ -24,13 +24,13 @@ export function createToken(
   refreshToken: string
 } {
   return {
-    accessToken: jwt.sign({ id: userId }, 'test_secret', {
-      algorithm: 'HS256',
-      expiresIn: '30m'
+    accessToken: jwt.sign({ id: userId }, jwtConfig.secret, {
+      algorithm: jwtConfig.algorithm,
+      expiresIn: jwtConfig.accessTokenExpiresIn
     }),
-    refreshToken: jwt.sign({ id: userId, reauthVersion }, 'test_secret', {
-      algorithm: 'HS256',
-      expiresIn: '30d'
+    refreshToken: jwt.sign({ id: userId, reauthVersion }, jwtConfig.secret, {
+      algorithm: jwtConfig.algorithm,
+      expiresIn: jwtConfig.refreshTokenExpiresIn
     })
   }
 }
