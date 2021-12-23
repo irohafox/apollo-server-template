@@ -24,13 +24,38 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
+
+    const invalid = await prisma.user.findUnique({
+      where: {
+        email: req.body.email
+      },
+      select: {
+        id: true
+      }
+    })
+    if (invalid) {
+      return res.status(422).json({
+        errors: [
+          {
+            param: 'email',
+            msg: '入力されたメールアドレスは既に利用されています。'
+          }
+        ]
+      })
+    }
+
     req.body.encryptedPassword = await generateEncryptedPassword(
       req.body.password
     )
     delete req.body.password
-    await prisma.user.create({
-      data: req.body
-    })
+
+    try {
+      await prisma.user.create({
+        data: req.body
+      })
+    } catch (error) {
+      return res.status(422).json({ errors: null })
+    }
     res.send('success')
   }
 )
