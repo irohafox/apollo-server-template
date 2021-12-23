@@ -105,10 +105,21 @@ router.post(
       const user = await prisma.user.create({
         data: permitAttributes(req.body),
         select: {
-          id: true
+          id: true,
+          reauthVersion: true
         }
       })
-      return res.status(200).json(user)
+
+      const { accessToken, refreshToken } = auth.createToken(
+        user.id,
+        user.reauthVersion
+      )
+
+      res.set({
+        'Access-Token': accessToken,
+        'Refresh-Token': refreshToken
+      })
+      res.send()
     } catch (_) {
       return res.status(422).json({ errors: null })
     }
