@@ -3,7 +3,7 @@ import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import express from 'express'
 import http from 'http'
 import authRouter from '@src/auth'
-import schema from '@src/graphql/schema'
+import schema from '@src/services/graphql/schema'
 
 require('dotenv').config()
 

@@ -18,16 +18,6 @@ const userResolver = {
     users: () => {
       return prisma.user.findMany()
     }
-  },
-  mutations: {
-    createUser: async (_: any, { input }: any) => {
-      input.encryptedPassword = await generateEncryptedPassword(input.password)
-      delete input.password
-      const user = await prisma.user.create({
-        data: input
-      })
-      return user
-    }
   }
 }
 
