@@ -3,8 +3,6 @@ import { body, validationResult } from 'express-validator'
 import * as auth from '@src/middleware/auth'
 import { prisma } from '@src/middleware/db'
 
-import jwtConfig from '@src/config/jwt'
-
 const router = Router()
 
 router.post(
