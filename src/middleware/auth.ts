@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import jwtConfig from '@src/config/jwt'
+import { jwtConfig } from '@src/config'
 
 export function generateEncryptedPassword(
   plainPassword: string

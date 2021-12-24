@@ -2,10 +2,9 @@ import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import express from 'express'
 import http from 'http'
+import { serverConfig } from '@src/config'
 import authRouter from '@src/services/auth'
 import schema from '@src/services/graphql/schema'
-
-require('dotenv').config()
 
 async function listen() {
   const app = express()
@@ -25,7 +24,7 @@ async function listen() {
 
   return new Promise((resolve, reject) => {
     httpServer
-      .listen(process.env.HTTP_SERVER_PORT)
+      .listen(serverConfig.port)
       .once('listening', resolve)
       .once('error', reject)
   })
@@ -35,7 +34,7 @@ async function main() {
   try {
     await listen()
     console.log(
-      `Server is ready at http://localhost:${process.env.HTTP_SERVER_PORT}\n`,
+      `Server is ready at http://localhost:${serverConfig.port}\n`,
       'Authentication: /auth\n',
       'GraphQL: /graphql'
     )

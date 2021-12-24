@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-require('dotenv').config()
-
-const jwtConfig: {
+export const jwtConfig: {
   algorithm: jwt.Algorithm
   accessTokenExpiresIn: string
   refreshTokenExpiresIn: string
@@ -13,5 +11,3 @@ const jwtConfig: {
   refreshTokenExpiresIn: '30d',
   secret: process.env.AUTH_SECRET as string
 }
-
-export default jwtConfig
