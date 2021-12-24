@@ -10,9 +10,8 @@ router.post(
   body('email').isEmail(),
   body('password').not().isEmpty(),
   async (req: Request, res: Response) => {
-    const [valid, errors] = validateRequest(req)
-    if (!valid) {
-      return res.status(400).json({ errors })
+    if (!validationResult(req).isEmpty()) {
+      return res.status(400).json({ errors: null })
     }
 
     const specificUser = await prisma.user.findUnique({
@@ -58,9 +57,8 @@ router.post(
   body('password').not().isEmpty(),
   body('name').not().isEmpty(),
   async (req: Request, res: Response) => {
-    const [valid, errors] = validateRequest(req)
-    if (!valid) {
-      return res.status(400).json({ errors })
+    if (!validationResult(req).isEmpty()) {
+      return res.status(400).json({ errors: null })
     }
 
     const duplicateEmail: boolean = await prisma.user
@@ -126,9 +124,15 @@ router.post(
   }
 )
 
-function validateRequest(req: Request): [boolean, any] {
-  const errors = validationResult(req)
-  return [errors.isEmpty(), errors.array()]
-}
+router.put(
+  '/refresh',
+  body('email').isEmail(),
+  async (req: Request, res: Response) => {
+    if (!validationResult(req).isEmpty()) {
+      return res.status(400).json({ errors: null })
+    }
+    res.send('refresh')
+  }
+)
 
 export default router
