@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { body, validationResult } from 'express-validator'
+import { body, header, validationResult } from 'express-validator'
 import * as auth from '@src/middleware/auth'
 import { prisma } from '@src/middleware/db'
 
@@ -83,7 +83,7 @@ router.post(
       })
     }
 
-    req.body.encryptedPassword = await auth.generateEncryptedPassword(
+    req.body.encryptedPassword = await auth.createEncryptedPassword(
       req.body.password
     )
 
@@ -126,12 +126,53 @@ router.post(
 
 router.put(
   '/refresh',
+  header('authorization').contains('Bearer'),
   body('email').isEmail(),
   async (req: Request, res: Response) => {
     if (!validationResult(req).isEmpty()) {
       return res.status(400).json({ errors: null })
     }
-    res.send('refresh')
+
+    const authHeader = req.headers.authorization as string
+    const targetRefreshToken = authHeader.replace('Bearer ', '')
+
+    try {
+      const decodedRefreshToken = auth.verifyToken(targetRefreshToken) as {
+        id: number
+        reauthVersion: number
+      }
+
+      const specificUser = await prisma.user.findUnique({
+        where: {
+          id: decodedRefreshToken.id
+        },
+        select: {
+          email: true,
+          reauthVersion: true
+        }
+      })
+
+      if (
+        !specificUser ||
+        specificUser.email !== req.body.email ||
+        specificUser.reauthVersion !== decodedRefreshToken.reauthVersion
+      ) {
+        return res.status(401).json({ errors: null })
+      }
+
+      const { accessToken, refreshToken } = auth.createToken(
+        decodedRefreshToken.id,
+        specificUser.reauthVersion
+      )
+
+      res.set({
+        'Access-Token': accessToken,
+        'Refresh-Token': refreshToken
+      })
+      res.send()
+    } catch (_) {
+      return res.status(401).json({ errors: null })
+    }
   }
 )
 

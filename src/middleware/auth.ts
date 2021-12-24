@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { jwtConfig } from '@src/config'
 
-export function generateEncryptedPassword(
+export function createEncryptedPassword(
   plainPassword: string
 ): Promise<string> {
   const saltRounds = 10
@@ -33,4 +33,8 @@ export function createToken(
       expiresIn: jwtConfig.refreshTokenExpiresIn
     })
   }
+}
+
+export function verifyToken(token: string) {
+  return jwt.verify(token, jwtConfig.secret)
 }
