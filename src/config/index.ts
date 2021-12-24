@@ -1,5 +1,5 @@
 /**
- * 設定ファイルは必ずこのファイルを起点にexport or Re-exportにより提供する
+ * 設定ファイルはこのファイルを起点にRe-exportにより提供する
  */
 
 void require('dotenv').config()
