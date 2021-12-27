@@ -2,17 +2,12 @@ import { prisma } from '@src/middleware/db'
 
 const userResolver = {
   queries: {
-    user: (_: any, { id }: { id: number }, context: any) => {
-      console.log(context.currentUser)
+    user: (_: any, {}, context: any) => {
       return prisma.user.findUnique({
         where: {
-          id: id
+          id: context.currentUser.id
         }
       })
-    },
-    users: (_: any, {}, context: any) => {
-      console.log(context.currentUser)
-      return prisma.user.findMany()
     }
   }
 }
