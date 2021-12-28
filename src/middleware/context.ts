@@ -15,7 +15,15 @@ type ContextRequest = {
   req: Request
 }
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+  log: [
+    {
+      emit: 'event',
+      level: 'query'
+    }
+  ]
+})
+
 if (prisma instanceof PrismaClient) {
   prisma.$on('query', (e: any) => {
     console.log('Query: ' + e.query)
