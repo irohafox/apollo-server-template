@@ -1,9 +1,10 @@
 import { Request, Response, Router } from 'express'
 import { body, header, validationResult } from 'express-validator'
 import * as auth from '@src/middleware/auth'
-import { prisma } from '@src/middleware/db'
+import { PrismaClient } from '@prisma/client'
 
 const router = Router()
+const prisma = new PrismaClient()
 
 router.post(
   '/sign_in',

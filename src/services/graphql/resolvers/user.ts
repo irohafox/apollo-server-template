@@ -1,11 +1,11 @@
-import { prisma } from '@src/middleware/db'
+import { Context } from '@src/middleware/context'
 
 const userResolver = {
   queries: {
-    user: (_: any, {}, context: any) => {
-      return prisma.user.findUnique({
+    user: (_: any, {}, context: Context) => {
+      return context.prisma.user.findUnique({
         where: {
-          id: context.currentUser.id
+          id: context.currentUser?.id
         }
       })
     }

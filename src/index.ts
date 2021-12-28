@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import express from 'express'
 import http from 'http'
-import { authContext } from '@src/middleware/context'
+import { createContext } from '@src/middleware/context'
 import { serverConfig } from '@src/config'
 import authRouter from '@src/services/auth'
 import schema from '@src/services/graphql/schema'
@@ -17,11 +17,7 @@ async function listen() {
 
   const server = new ApolloServer({
     schema,
-    context: ({ req }) => {
-      return {
-        currentUser: authContext(req)
-      }
-    },
+    context: createContext,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   })
 
